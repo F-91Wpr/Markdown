@@ -3,7 +3,7 @@
 ## 准备
 
 1. hdfs
-2. zookeeper
+2. [zookeeper](zookeeper.md)
 
 ## 安装 HBase
 
@@ -76,12 +76,12 @@
 
     - 启动命令：```start-hbase.sh```
     - 停止命令：```stop-hbase.sh```
-    - HBase管理页面：http://hadoop102:16010
-    - 注意：如果集群之间的节点时间不同步，会导致regionserver无法启动，抛出ClockOutOfSyncException异常。
+    - HBase 管理页面：http://hadoop102:16010
+    - 注意：如果集群之间的节点时间不同步，会导致regionserver无法启动，抛出`ClockOutOfSyncException`异常。
 
 6. 高可用
 
-    1. 关闭HBase集群（如果没有开启则跳过此步）
+    1. 关闭 HBase 集群（如果没有开启则跳过此步）
     
         ```shell
         stop-hbase.sh
@@ -93,19 +93,19 @@
         touch conf/backup-masters
         ```
     
-    3. 在`backup-masters`文件中配置高可用HMaster节点
+    3. 在`backup-masters`文件中配置高可用 HMaster 节点
     
         ```shell
         echo hadoop103 > conf/backup-masters
         ```
 
-    4. 分发conf
+    4. 分发 conf
     
         ```shell
         xsync conf
         ```
 
-    5. 重启hbase,查看管理页面：http://hadooo102:16010 
+    5. 重启 hbase ,查看管理页面：http://hadooo102:16010 
 
 ## HBase Shell 操作
 
