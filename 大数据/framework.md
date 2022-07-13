@@ -31,32 +31,32 @@
 
 学习用例：
 
-| 服务名称               | 子服务               | 服务器hadoop102 | 服务器hadoop103 | 服务器hadoop104 |
-| ---------------------- | -------------------- | :-------------: | :-------------: | :-------------: |
-| HDFS                   | NameNode             |        √        |                 |                 |
-| ^                      | SecondaryNameNode    |                 |        √        |                 |
-| ^                      | DataNode             |        √        |        √        |        √        |
-| Yarn                   | Resourcemanager      |                 |        √        |                 |
-| ^                      | NodeManager          |        √        |        √        |        √        |
-| Zookeeper              | QuorumPeerMain       |        √        |        √        |        √        |
-| Kafka                  | Kafka                |        √        |        √        |        √        |
-| Flume（采集日志）      | Application          |        √        |        √        |                 |
-| Flume（消费Kafka日志） | Application          |                 |                 |        √        |
-| Flume（消费Kafka业务） | Application          |                 |                 |        √        |
-| MySQL                  | MySQL                |        √        |                 |                 |
-| Maxwell                | Maxwell              |        √        |                 |                 |
-| DataX                  |                      |        √        |        √        |        √        |
-| Hive                   | RunJar               |        √        |        √        |        √        |
-| Spark                  |                      |        √        |        √        |        √        |
-| DolphinScheduler       | ApiApplicationServer |        √        |                 |                 |
-| ^                      | AlertServer          |        √        |                 |                 |
-| ^                      | MasterServer         |        √        |                 |                 |
-| ^                      | WorkerServer         |        √        |        √        |        √        |
-| ^                      | LoggerServer         |        √        |        √        |        √        |
-| Superset               | Superset             |        √        |                 |                 |
-| Flink                  |                      |        √        |                 |                 |
-| ClickHouse             |                      |        √        |                 |                 |
-| Redis                  |                      |        √        |                 |                 |
-| Hbase                  |                      |        √        |                 |                 |
-| 服务数总计             |                      |       20        |       11        |       12        |
+| 服务名称               | 子服务                 | 服务器hadoop102 | 服务器hadoop103 | 服务器hadoop104 |
+| ---------------------- | ---------------------- | :-------------: | :-------------: | :-------------: |
+| HDFS                   | NameNode               |        √        |                 |                 |
+| ^                      | SecondaryNameNode      |                 |        √        |                 |
+| ^                      | DataNode               |        √        |        √        |        √        |
+| Yarn                   | Resourcemanager        |                 |        √        |                 |
+| ^                      | NodeManager            |        √        |        √        |        √        |
+| Zookeeper              | QuorumPeerMain         |        √        |        √        |        √        |
+| Kafka                  | Kafka                  |        √        |        √        |        √        |
+| Flume（采集日志）      | Application            |        √        |        √        |                 |
+| Flume（消费Kafka日志） | Application            |                 |                 |        √        |
+| Flume（消费Kafka业务） | Application            |                 |                 |        √        |
+| MySQL                  | MySQL                  |        √        |                 |                 |
+| Maxwell                | Maxwell                |        √        |                 |                 |
+| DataX                  |                        |        √        |        √        |        √        |
+| Hive                   | RunJar                 |        √        |        √        |        √        |
+| Spark                  |                        |        √        |        √        |        √        |
+| DolphinScheduler       | ApiApplicationServer   |        √        |                 |                 |
+| ^                      | AlertServer            |        √        |                 |                 |
+| ^                      | MasterServer           |        √        |                 |                 |
+| ^                      | WorkerServer           |        √        |        √        |        √        |
+| ^                      | LoggerServer           |        √        |        √        |        √        |
+| Superset               | Superset               |        √        |                 |                 |
+| Flink                  |                        |        √        |                 |                 |
+| ClickHouse             |                        |        √        |                 |                 |
+| Redis                  |                        |        √        |                 |                 |
+| Hbase                  | HMaster、HRegionServer |        √        |                 |                 |
+| 服务数总计             |                        |       20        |       11        |       12        |
 

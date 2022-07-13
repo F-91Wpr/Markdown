@@ -108,3 +108,7 @@
     5. 重启hbase,查看管理页面：http://hadooo102:16010 
 
 ## HBase Shell 操作
+
+```
+hbase shell
+```
