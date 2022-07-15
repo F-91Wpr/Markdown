@@ -1,5 +1,41 @@
 [HOME](https://hbase.apache.org/)
 
+[HBase 官方文档中文版](http://abloz.com/hbase/book.html)
+
+## [概述](http://abloz.com/hbase/book.html#architecture)
+
+1. NoSQL?
+
+    HBase是一种 "NoSQL" 数据库. "NoSQL"是一个通用词表示数据库不是RDBMS ，后者支持 SQL 作为主要访问手段。有许多种 NoSQL 数据库: BerkeleyDB 是本地 NoSQL 数据库例子, 而 HBase 是大型分布式数据库。 技术上来说, HBase 更像是"数据存储(Data Store)" 多于 "数据库(Data Base)"。因为缺少很多RDBMS特性, 如列类型，第二索引，触发器，高级查询语言等.
+
+    然而, HBase 有许多特征同时支持线性化和模块化扩充。 HBase 集群通过增加RegionServers进行扩充。 它可以放在普通的服务器中。例如，如果集群从10个扩充到20个RegionServer，存储空间和处理容量都同时翻倍。 RDBMS 也能很好扩充， 但仅对一个点 - 特别是对一个单独数据库服务器的大小 - 同时，为了更好的性能，需要特殊的硬件和存储设备。 HBase 特性：
+
+    - 强一致性读写: HBase 不是 "最终一致性(eventually consistent)" 数据存储. 这让它很适合高速计数聚合类任务。
+    - 自动分片(Automatic sharding): HBase 表通过region分布在集群中。数据增长时，region会自动分割并重新分布。
+    - RegionServer 自动故障转移
+    - Hadoop/HDFS 集成: HBase 支持本机外HDFS 作为它的分布式文件系统。
+    - MapReduce: HBase 通过MapReduce支持大并发处理， HBase 可以同时做源和目标.
+    - Java 客户端 API: HBase 支持易于使用的 Java API 进行编程访问.
+    - Thrift/REST API: HBase 也支持Thrift 和 REST 作为非Java 前端.
+    - Block Cache 和 Bloom Filters: 对于大容量查询优化， HBase支持 Block Cache 和 Bloom Filters。
+    - 运维管理: HBase提供内置网页用于运维视角和JMX 度量.
+
+2. 什么时候用 HBase?
+   
+    HBase 不适合所有问题.
+
+    首先，确信有足够多数据，如果有上亿或上千亿行数据，HBase 是很好的备选。 如果只有上千或上百万行，则用传统的RDBMS可能是更好的选择。因为所有数据可以在一两个节点保存，集群其他节点可能闲置。
+
+    其次，确信可以不依赖所有 RDBMS 的额外特性 (e.g., 列数据类型, 第二索引, 事物,高级查询语言等.) 一个建立在 RDBMS 上应用，如不能仅通过改变一个 JDBC 驱动移植到 HBase。相对于移植， 需考虑从 RDBMS 到 HBase 是一次完全的重新设计。
+
+    第三， 确信你有足够硬件。甚至 HDFS 在小于5个数据节点时，干不好什么事情 (根据如 HDFS 块复制具有缺省值 3), 还要加上一个 NameNode.
+
+    HBase 能在单独的笔记本上运行良好。但这应仅当成开发配置。
+
+3. HBase 和 Hadoop/HDFS 的区别?
+
+    HDFS 是分布式文件系统，适合保存大文件。官方宣称它并非普通用途文件系统，不提供文件的个别记录的快速查询。 另一方面，HBase 基于 HDFS 且提供大表的记录快速查找(和更新)。这有时可能引起概念混乱。 HBase 内部将数据放到索引好的 "存储文件(StoreFiles)" ，以便高速查询。存储文件位于 HDFS 中。参考[数据模型](http://abloz.com/hbase/book.html#datamodel)。
+
 ## 准备
 
 1. hdfs
@@ -9,9 +45,7 @@
 
 1. 解压
 
-2. 配置
-
-    1. 环境变量
+   1. 环境变量
 
         ```shell
         sudo vim /etc/profile.d/my_env.sh
@@ -23,7 +57,9 @@
         source /etc/profile.d/my_env.sh
         ```
 
-    2. 配置文件`/opt/module/hbase-2.0.5/conf`
+2. 配置[配置示例](http://abloz.com/hbase/book.html#example_config)
+
+    1. 配置文件`/opt/module/hbase-2.0.5/conf`
 
         1. `hbase-env.sh`:
 
@@ -31,7 +67,7 @@
             export HBASE_MANAGES_ZK=false
             ```
 
-        2. `hbase-site.xml`:
+        2. [`hbase-site.xml`](http://abloz.com/hbase/book.html#hbase_default_configurations):
             ```xml
             <configuration>
                 <property>
@@ -109,42 +145,77 @@
 
 ## HBase 操作
 
-1. HBase shell
+### [HBase shell](http://abloz.com/hbase/book.html#shell)
+
+```
+hbase shell
+```
+
+> help | create | put | scan | get | delete / deleteall | disable / drop
+
+
+### [HBase API](http://abloz.com/hbase/book.html#data_model_operations)
+
+1. maven 依赖
+
+    ```xml
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-server</artifactId>
+            <version>2.0.5</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.glassfish</groupId>
+                    <artifactId>javax.el</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-client</artifactId>
+            <version>2.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>3.0.1-b06</version>
+        </dependency>
+    </dependencies>
     ```
-    hbase shell
-    ```
 
-2. HBase API
+2. 待施工
 
-    1. maven 依赖
+    1. 创建/关闭连接
 
-        ```xml
-        <dependencies>
-            <dependency>
-                <groupId>org.apache.hbase</groupId>
-                <artifactId>hbase-server</artifactId>
-                <version>2.0.5</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.glassfish</groupId>
-                        <artifactId>javax.el</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hbase</groupId>
-                <artifactId>hbase-client</artifactId>
-                <version>2.0.5</version>
-            </dependency>
-            <dependency>
-                <groupId>org.glassfish</groupId>
-                <artifactId>javax.el</artifactId>
-                <version>3.0.1-b06</version>
-            </dependency>
-        </dependencies>
+        ```java
+        // 设置静态属性hbase连接
+        public static Connection connection = null;
+
+        static {
+            // 1. 创建配置对象
+            Configuration conf = new Configuration();
+
+            // 2. 添加配置参数
+            conf.set("hbase.zookeeper.quorum", "hadoop102,hadoop103,hadoop104");
+
+            // 3. 创建hbase的连接
+            try {
+                connection = ConnectionFactory.createConnection(conf);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        public static void closeConnection() throws IOException {
+            if (connection != null) {
+                connection.close();
+            }
+        }
         ```
-    
-    2. 待施工
+
+
 
 ## 原理
 
@@ -161,7 +232,7 @@ RegionServer
 ## 调参
 
 预分区
-Row_key 设计
+[Rowkey 设计](http://abloz.com/hbase/book.html#rowkey.design)
 优化
 
 ## 整合 Phoenix
@@ -247,6 +318,42 @@ Row_key 设计
                 </dependency>
             </dependencies>
             ```
+        
+        2. 测试案例
+
+            ```java
+            package org.example.phoenix.org.example.phoenix;
+
+            import java.sql.*;
+            import java.util.Properties;
+
+            public class ThickClient {
+                public static void main(String[] args) throws SQLException {
+
+                    // 1.添加链接
+                    String url = "jdbc:phoenix:hadoop102,hadoop103,hadoop104:2181";
+                    Properties properties = new Properties();
+                    properties.setProperty("phoenix.schema.isNamespaceMappingEnabled", "true");
+
+                    // 2.获取连接
+                    Connection connection = DriverManager.getConnection(url, properties);
+
+                    // 3.编译SQL语句
+                    PreparedStatement preparedStatement = connection.prepareStatement("select * from student");
+
+                    // 4.执行语句
+                    ResultSet resultSet = preparedStatement.executeQuery();
+
+                    // 5.输出结果
+                    while (resultSet.next()) {
+                        System.out.println(resultSet.getString(1) + " - " + resultSet.getString(2) + " - " + resultSet.getString(3));
+                    }
+
+                    // 6.关闭资源
+                    connection.close();
+                }
+            }
+            ```
 
     2. 瘦客户端
 
@@ -269,9 +376,44 @@ Row_key 设计
             </dependencies>
             ```
 
+        3. 测试案例
+
+            ```java
+            package org.example.phoenix.org.example.phoenix;
+
+            import org.apache.phoenix.queryserver.client.ThinClientUtil;
+
+            import java.sql.*;
+
+            public class ThinClient {
+                public static void main(String[] args) throws SQLException {
+
+                    // 1. 直接从瘦客户端获取链接
+                    String hadoop102 = ThinClientUtil.getConnectionUrl("hadoop102", 8765);
+                    // 2. 获取连接
+                    Connection connection = DriverManager.getConnection(hadoop102);
+
+                    // 3.编译SQL语句
+                    PreparedStatement preparedStatement = connection.prepareStatement("select * from student");
+
+                    // 4.执行语句
+                    ResultSet resultSet = preparedStatement.executeQuery();
+
+                    // 5.输出结果
+                    while (resultSet.next()) {
+                        System.out.println(resultSet.getString(1) + " - " + resultSet.getString(2) + " - " + resultSet.getString(3));
+                    }
+
+                    // 6.关闭资源
+                    connection.close();
+                }
+            }
+            ```
+
 ### 二级索引
     
-添加如下配置到 HBase 的 Regionserver 节点的 `hbase-site.xml`。
+- 添加如下配置到 HBase 的 Regionserver 节点的 `hbase-site.xml`。
+    
     ```xml
     <!-- phoenix regionserver 配置参数-->
     <property>
