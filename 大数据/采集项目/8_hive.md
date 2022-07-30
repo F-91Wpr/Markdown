@@ -216,7 +216,7 @@ Spark
         <property>
             <name>hive.metastore.uris</name>
             <value>thrift://hadoop102:9083</value>
-        </property>
+        </property> 
         ```
         
     2. 启动 metastore 命令

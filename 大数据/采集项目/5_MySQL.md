@@ -2,6 +2,12 @@
 
 0. 准备
 
+    MySQL 卸载
+    
+    ```shell
+    rpm -qa | grep -i -E mysql\|mariadb | xargs -n1 sudo rpm -e --nodeps
+    ```
+
 1. 安装MySQL
 
    1. 安装 MySQL依赖
@@ -24,7 +30,7 @@
         sudo rpm -ivh 05_mysql-community-server-5.7.16-1.el7.x86_64.rpm
         ```
 
-    4. 测试
+    1. 测试
 
         ```shell
         #启动 MySQL
@@ -100,7 +106,6 @@
     mysql> CREATE USER 'maxwell'@'%' IDENTIFIED BY 'maxwell';
     mysql> GRANT ALL ON maxwell.* TO 'maxwell'@'%';
     mysql> GRANT SELECT, REPLICATION CLIENT, REPLICATION SLAVE ON *.* TO 'maxwell'@'%';
-
     ```
 
 3. 修改 Maxwell 配置文件
