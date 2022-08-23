@@ -120,14 +120,17 @@
     #目标Kafka集群地址
     kafka.bootstrap.servers=hadoop102:9092,hadoop103:9092
     #目标Kafka topic，可静态配置，例如:maxwell，也可动态配置，例如：%{database}_%{table}
-    kafka_topic=maxwell
-    #kafka_topic=topic_db
+    #kafka_topic=maxwell
+    kafka_topic=topic_db
 
     #MySQL相关配置
     host=hadoop102
     user=maxwell
     password=maxwell
     jdbc_options=useSSL=false&serverTimezone=Asia/Shanghai
+
+    # 补充
+    client_id=maxwell_1
     ```
 
 4. 测试
