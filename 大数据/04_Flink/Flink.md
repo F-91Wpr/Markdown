@@ -56,6 +56,62 @@ Process Function 这类底层抽象和 DataStream API 的相互集成使得用�
 
 ## （待完成）部署
 
+### 1. 解压
+
+```shell
+tar -zxvf flink-1.13.0-bin-scala_2.12.tgz -C /opt/module/
+```
+
+### 2. 添加环境变量
+
+```shell
+#FLINK
+export HADOOP_CLASSPATH=`hadoop classpath`
+export HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop
+```
+
+### 3. 开启/关闭
+
+```shell
+bin/start-cluster.sh    #开启 Flink
+bin/stop-cluster.sh     #关闭 Flink
+```
+
+### 4. 配置集群
+
+1. 指定 JobManager 节点
+
+    ```shell
+    vim /opt/module/flink-1.13.0/conf/flink-conf.yaml
+    ```
+
+    ```shell
+    # JobManager 节点地址
+    jobmanager.rpc.address: hadoop102
+    ```
+
+2. 指定 TaskManager 节点
+
+    ```shell
+    vim /opt/module/flink-1.13.0/conf/workers
+    ```
+
+    ```shell
+    hadoop103
+    hadoop104
+    ```
+
+3. 分发安装目录
+
+### 5. 配置文件`flink-conf.yaml`
+
+对集群中的JobManager和TaskManager组件进行优化配置，主要配置项如下：
+- `jobmanager.memory.process.size`：对JobManager进程可使用到的全部内存进行配置，包括JVM元空间和其他开销，默认为1600M，可以根据集群规模进行适当调整。
+- `taskmanager.memory.process.size`：对TaskManager进程可使用到的全部内存进行配置，包括JVM元空间和其他开销，默认为1600M，可以根据集群规模进行适当调整。
+- `taskmanager.numberOfTaskSlots`：对每个TaskManager能够分配的Slot数量进行配置，默认为1，可根据TaskManager所在的机器能够提供给Flink的CPU数量决定。所谓Slot就是TaskManager中具体运行一个任务所分配的计算资源。
+- `parallelism.default`：Flink任务执行的默认并行度，优先级低于代码中进行的并行度配置和任务提交时使用参数指定的并行度数量。
+
+
 
 
 ## 架构
