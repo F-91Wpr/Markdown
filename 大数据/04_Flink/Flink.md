@@ -1,16 +1,16 @@
-## 
-### Flink 是什么
+## 绪论
+### 一句话
 
 Apache Flink 是一个框架和分布式处理引擎，用于在**无界**和**有界**数据流上进行有状态的计算。
 Flink 能**部署应用到任意地方**运行，并能以**内存速度**和**任意规模**进行计算。
 
 [解析](https://flink.apache.org/zh/flink-architecture.html#leverage-in-memory-performance)
 
-### Flink 特性
+### 特性
 
 - 结果的准确性。完美解决了乱序数据对结果正确性的影响。
 
-- 精确一次（exactly-once）：Flink 的 checkpoint 和故障恢复算法保证了故障发生后应用状态的一致性。
+- 精确一次（exactly-once）的一致性：Flink 的 checkpoint 和故障恢复算法保证了故障发生后应用状态的一致性。
 
 - 高吞吐和低延迟。每秒处理数百万个事件，毫秒级延迟。
 
@@ -20,41 +20,24 @@ Flink 能**部署应用到任意地方**运行，并能以**内存速度**和**�
 
 - Flink能够更方便地升级、迁移、暂停、恢复应用服务（save point）。
 
-### 分层 API
+### 典型场景
 
-Flink 为流式/批式处理应用程序的开发提供了不同级别的抽象。
+1. 电商和市场营销
+    举例：实时数据报表、广告投放、实时推荐
 
-![图 1](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/07/mdi_20220730_1659182979452.png)
+2. 物联网（IOT）
+    举例：传感器实时数据采集和显示、实时报警，交通运输业
 
-- Flink API 最底层的抽象为有状态实时流处理。
-    - 抽象实现： Process Function，被 Flink 框架集成到了 DataStream API 中。
-    - 它允许用户在应用程序中自由地处理来自单流或多流的事件（数据），并提供具有全局一致性和容错保障的状态。
-    - 用户可以在此层抽象中注册事件时间（event time）和处理时间（processing time）回调方法。
+3. 物流配送和服务业
+    举例：订单状态实时更新、通知信息推送
 
-- Flink API 第二层抽象是 Core APIs。
-    - 其中包含 DataStream API（应用于有界/无界数据流场景）和 DataSet API（应用于有界数据集场景）两部分。
-    - Core APIs 提供的流式 API（Fluent API）为数据处理提供了通用的模块组件，例如各种形式的用户自定义转换（transformations）、联接（joins）、聚合（aggregations）、窗口（windows）和状态（state）操作等。
+4. 银行和金融业
+    举例：实时结算和通知推送，实时检测异常行为
 
-Process Function 这类底层抽象和 DataStream API 的相互集成使得用户可以选择使用更底层的抽象 API 来实现自己的需求。DataSet API 还额外提供了一些原语，比如循环/迭代（loop/iteration）操作。
-
-- Flink API 第三层抽象是 Table API。
-    - Table API 是以表（Table）为中心的声明式编程（DSL）API，例如在流式数据场景下，它可以表示一张正在动态改变的表。
-    - Table API 遵循（扩展）关系模型：即表拥有 schema（类似于关系型数据库中的 schema）
-    - Table API 也提供了类似于关系模型中的操作，比如 select、project、join、group-by 和 aggregate 等。
-    - Table API 程序是以声明的方式定义应执行的逻辑操作，而不是确切地指定程序应该执行的代码。
-    - 尽管 Table API 使用起来很简洁并且可以由各种类型的用户自定义函数扩展功能，但还是比 Core API 的表达能力差。此外，Table API 程序在执行之前还会使用优化器中的优化规则对用户编写的表达式进行优化。
-
-表和 DataStream/DataSet 可以进行无缝切换，Flink 允许用户在编写应用程序时将 Table API 与 DataStream/DataSet API 混合使用。
-
-- Flink API 最顶层抽象是 SQL。
-    - 这层抽象在语义和程序表达式上都类似于 Table API，但是其程序实现都是 SQL 查询表达式。SQL 抽象与 Table API 抽象之间的关联是非常紧密的，并且 SQL 查询语句可以在 Table API 中定义的表上执行。
-
-### （待做）Flink VS Spark
+### Flink VS SparkStreaming（待做）
 
 
-
-
-## （待完成）部署
+## 部署（待完善）
 
 ### 1. 解压
 
@@ -111,12 +94,7 @@ bin/stop-cluster.sh     #关闭 Flink
 - `taskmanager.numberOfTaskSlots`：对每个TaskManager能够分配的Slot数量进行配置，默认为1，可根据TaskManager所在的机器能够提供给Flink的CPU数量决定。所谓Slot就是TaskManager中具体运行一个任务所分配的计算资源。
 - `parallelism.default`：Flink任务执行的默认并行度，优先级低于代码中进行的并行度配置和任务提交时使用参数指定的并行度数量。
 
-
-
-
 ## 架构
-
-### 整体架构
 
 ![图 1](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/08/mdi_20220812_1660310165288.png)  
 
@@ -129,7 +107,7 @@ JobManager 协调 Flink 应用程序的分布式执行：它决定何时调度�
 
     Dispatcher 提供了一个 REST 接口，用来提交 Flink 应用程序执行，并**为每个提交的作业启动一个新的 JobMaster**。它还运行 Flink WebUI 用来提供作业执行信息。
 
-2. JobMaster -- Job
+2. JobMaster 
 
     JobMaster 负责管理单个JobGraph的执行。Flink 集群中可以同时运行多个作业，每个作业都有自己的 JobMaster。
 
@@ -170,22 +148,22 @@ Finished、canceled 和 failed 会导致全局的终结状态，并且触发作�
 ### TaskManager
 https://nightlies.apache.org/flink/flink-docs-master/zh/docs/concepts/flink-architecture/#taskmanagers
 
-slot -- 线程
-slots -- Parallelism（并行度）
+对于分布式执行，Flink 将算子的 subtasks 链接成 tasks。每个 task 由一个线程执行。
 
-对于分布式执行，Flink 将算子的 subtasks 链接成 tasks。每个 task 由一个线程执行。将算子链接成 task 是个有用的优化：它减少线程间切换、缓冲的开销，并且减少延迟的同时增加整体吞吐量。[链行为配置](https://nightlies.apache.org/flink/flink-docs-master/zh/docs/dev/datastream/operators/overview/#%e7%ae%97%e5%ad%90%e9%93%be%e5%92%8c%e8%b5%84%e6%ba%90%e7%bb%84)。
+将算子链接成 task 是个有用的优化：它减少线程间切换、缓冲的开销，并且减少延迟的同时增加整体吞吐量。[链行为配置](https://nightlies.apache.org/flink/flink-docs-master/zh/docs/dev/datastream/operators/overview/#%e7%ae%97%e5%ad%90%e9%93%be%e5%92%8c%e8%b5%84%e6%ba%90%e7%bb%84)。
 
-Flink 经常并发执行连续的 task。
 
 slot 共享有两个主要优点：
 
 - Flink 集群所需的 task slot 和作业中使用的最大并行度恰好一样。无需计算程序总共包含多少个 task（具有不同并行度）。
-
 - 容易获得更好的资源利用。
 
-### 作业提交流程
+### TaskManager 内存模型（重点）（待做）
 
-### 一些概念
+
+### 作业提交流程（待做）
+
+### 一些概念（待整理）
 
 1. 数据流图（Dataflow Graph）
 
@@ -208,30 +186,162 @@ slot 共享有两个主要优点：
 5. 任务（Tasks）和任务槽（Task Slots）
 
 
-## API
+## 概念
 
-### DataStream API
+### 时间语义
 
-1. env
-2. source
-3. transformation
-4. sink
+1. 处理时间：处理时间是指执行相应操作的机器的系统时间。
+
+    处理时间是最简单的时间概念，不需要流和机器之间的协调。它提供最佳性能和最低延迟。但是，在分布式和异步环境中，处理时间并不能提供确定性，因为它容易受到记录到达系统（例如从消息队列）的速度，以及记录在系统内操作员之间流动的速度的影响，以及中断（计划的或其他的）。
+
+2. 事件时间：事件时间是每个单独事件在其生产设备上发生的时间。
+
+    这个时间通常在记录进入 Flink 之前嵌入到记录中，并且可以从每条记录中提取该事件​​时间戳。在事件时间中，时间的进展取决于数据，而不是任何挂钟。事件时间程序必须指定如何生成事件时间水印，这是在事件时间发出进度信号的机制。
+
+    在一个完美的世界中，事件时间处理将产生完全一致和确定性的结果，无论事件何时到达或它们的顺序如何。但是，除非已知事件按顺序（按时间戳）到达，否则事件时间处理在等待无序事件时会产生一些延迟。由于只能等待有限的时间段，这限制了事件时间应用程序的确定性。
+
+对于聚合的需求：开窗。
 
 ### Watermark
-水位线：
-- 事件时间语义下的时钟
-- 单调递增
-- 基于数据中的时间戳生成
-- 在处理乱序流时设置延迟
-    - 一个水位线Watermark(t)，表示在当前流中事件时间已经达到了时间戳t, 这代表t之前的所有数据都到齐了，之后流中不会出现时间戳t’ ≤ t的数据
+
+1. 水位线：
+   - 事件时间语义下的时钟
+   - 单调不减
+   - 基于数据中的时间戳生成
+   - 在处理乱序流时设置延迟
+       - 一个水位线Watermark(t)，表示在当前流中事件时间已经达到了时间戳t, 这代表t之前的所有数据都到齐了，之后流中不会出现时间戳t’ ≤ t的数据
+       - 对于违反 Watermark 但有期待的数据：设置允许迟到。
+
+2. 生成方式： 1. 周期性生成  2.标记生成。
+
+3. 生成位置：WatermarkStrategy 可以在 Flink 应用程序中的两处使用：1.直接在数据源上使用 2. 第二种是直接在非数据源的操作之后使用。
+
+4. 算子处理 Watermark 的方式
+
+    一般情况下，在将 watermark 转发到下游之前，需要算子对其进行触发的事件完全进行处理。例如，WindowOperator 将首先计算该 watermark 触发的所有窗口数据，当且仅当由此 watermark 触发计算进而生成的所有数据被转发到下游之后，其才会被发送到下游。
+
+    相同的规则也适用于 TwoInputStreamOperator。但是，在这种情况下，算子当前的 watermark 会取其两个输入的最小值。
+
+    详细内容可查看对应算子的实现：OneInputStreamOperator#processWatermark、TwoInputStreamOperator#processWatermark1 和 TwoInputStreamOperator#processWatermark2。
+
+#### 水位线源码
 
 ```java
-// 乱序流水位线生成
-steam.assignTimestampsAndWatermarks(
-        WatermarkStrategy.<Event>forBoundedOutOfOrderness(Duration.ofSeconds(2))
-                .withTimestampAssigner((data, timestamp) -> data.timestamp)
-);
+public class BoundedOutOfOrdernessWatermarks<T> implements WatermarkGenerator<T> {
+
+    /** 最大时间戳 */
+    private long maxTimestamp;
+
+    /** 乱序程度 */
+    private final long outOfOrdernessMillis;
+
+    /**
+     * 初始化及 Watermark 生成逻辑
+     */
+    public BoundedOutOfOrdernessWatermarks(Duration maxOutOfOrderness) {
+        checkNotNull(maxOutOfOrderness, "maxOutOfOrderness");
+        checkArgument(!maxOutOfOrderness.isNegative(), "maxOutOfOrderness cannot be negative");
+
+        //初始化 maxTimestamp 和 outOfOrdernessMillis
+        this.outOfOrdernessMillis = maxOutOfOrderness.toMillis();
+        this.maxTimestamp = Long.MIN_VALUE + outOfOrdernessMillis + 1;
+    }
+
+    // ------------------------------------------------------------------------
+
+    @Override
+    public void onEvent(T event, long eventTimestamp, WatermarkOutput output) {
+        maxTimestamp = Math.max(maxTimestamp, eventTimestamp);
+    }
+
+    @Override
+    public void onPeriodicEmit(WatermarkOutput output) {
+        output.emitWatermark(new Watermark(maxTimestamp - outOfOrdernessMillis - 1));
+    }
+}
 ```
+
+使用案例：
+
+1. 乱序流水位线生成
+    ```java
+    steam.assignTimestampsAndWatermarks(
+            WatermarkStrategy.<Event>forBoundedOutOfOrderness(Duration.ofSeconds(2)) // 设置乱序程度：1. 不能为 null 2. 不能为负数
+                    .withTimestampAssigner((data, timestamp) -> data.timestamp) // 提取时间戳字段
+                    .withIdleness(Duration.ofSeconds(2)) // 处理空闲数据源
+    );
+    ```
+
+2. 自定义水位线生成
+
+```java
+steam.assignTimestampsAndWatermarks(new WatermarkStrategy<Event>() {
+    @Override
+    public WatermarkGenerator<Event> createWatermarkGenerator(WatermarkGeneratorSupplier.Context context) {
+        return new WatermarkGenerator<Event>() {
+            Long maxTimestamp = 0L;
+            final Long outOfOrdernessMillis = 2000L;
+
+            @Override
+            // 为每个事件调用，允许水印生成器检查并记录事件时间戳，或根据事件本身发出水印。
+            public void onEvent(Event event, long eventTimestamp, WatermarkOutput output) {
+                maxTimestamp=Math.max(maxTimestamp,eventTimestamp);
+            }
+
+            @Override
+            // 周期调用，可能会发出新的水印。调用此方法和生成水印的时间间隔取决于 ExecutionConfig.getAutoWatermarkInterval（）。
+            public void onPeriodicEmit(WatermarkOutput output) {
+                output.emitWatermark(new Watermark(maxTimestamp-outOfOrdernessMillis-1));
+//                        System.out.println("onPeriodicEmit: "+context.?);
+            }
+        };
+    }
+}.withTimestampAssigner(new SerializableTimestampAssigner<Event>() {
+    @Override
+    public long extractTimestamp(Event element, long recordTimestamp) {
+        return element.timestamp;
+    }
+}));
+```
+
+#### 处理迟到数据
+
+Flink 中处理乱序依赖 Watermark + Window + Trigger；
+
+对于 Window 而言，还提供了 allowedLateness 方法，只针对Event Time有效；
+
+allowedLateness 可用于 TumblingEventTimeWindow、SlidingEventTimeWindow 以及 EventTimeSessionWindows，要注意这可能使得窗口再次被触发，相当于对前一次窗口的窗口的修正（累加计算或者累加撤回计算）；
+
+要注意再次触发窗口时，UDF中的状态值的处理，要考虑state在计算时的去重问题。
+
+最后要注意的问题，就是sink的问题，由于同一个key的同一个window可能被sink多次，因此sink的数据库要能够接收此类数据。
+
+```java
+
+stream = env.addSource(new ClickSource())
+            .assignTimestampsAndWatermarks(WatermarkStrategy.<Event>forBoundedOutOfOrderness(Duration.ofSeconds(2)) //1. 乱序程度
+                    .withTimestampAssigner((event, timestamp) -> event.timestamp));
+stream
+.window(TumblingEventTimeWindows.of(Time.seconds(10L))) // 窗口大小
+.allowedLateness(Time.seconds(2L))  // 2. 事件时间窗口的延迟计算时间
+.sideOutputLateData(new OutputTag<Event>("lateData") {})    // 3. 侧输出流
+;
+```
+
+#### Watermark 策略与 Kafka 连接器
+
+Flink 中可识别 Kafka 分区的 watermark 生成机制。使用此特性，将在 Kafka 消费端内部针对每个 Kafka 分区生成 watermark，并且不同分区 watermark 的合并方式与在数据流 shuffle 时的合并方式相同。
+
+```java
+FlinkKafkaConsumer<MyType> kafkaSource = new FlinkKafkaConsumer<>("myTopic", schema, props);
+kafkaSource.assignTimestampsAndWatermarks(
+        WatermarkStrategy
+                .forBoundedOutOfOrderness(Duration.ofSeconds(20)));
+
+DataStream<MyType> stream = env.addSource(kafkaSource);
+```
+
+### State
 
 ### window
 Flink 中窗口是动态创建———当有落在这个窗口区间范围的数据达到时，才创建对应的窗口。另外，这里我们认为到达窗口结束时间时，窗口就触发计算并关闭，事实上“窗口关闭”和“触发计算”两个行为也可以分开。
@@ -265,22 +375,174 @@ Flink 中窗口是动态创建———当有落在这个窗口区间范围的�
 
         - 需自定义 Trigger
 
-### Process Function
+## API
+
+Flink 为流式/批式处理应用程序的开发提供了不同级别的抽象。
+
+![图 1](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/07/mdi_20220730_1659182979452.png)
+
+1. Flink API 最底层的抽象为有状态实时流处理。
+    - 抽象实现： **Process Function**，被 Flink 框架集成到了 DataStream API 中。
+    - 它允许用户在应用程序中自由地处理来自单流或多流的事件（数据），并提供具有全局一致性和容错保障的状态。
+    - 用户可以在此层抽象中注册事件时间（event time）和处理时间（processing time）回调方法。
+
+2. Flink API 第二层抽象是 Core APIs。
+    - 其中包含 **DataStream API**（应用于有界/无界数据流场景）和 DataSet API（应用于有界数据集场景）两部分。
+    - Core APIs 提供的流式 API（Fluent API）为数据处理提供了通用的模块组件，例如各种形式的用户自定义转换（transformations）、联接（joins）、聚合（aggregations）、窗口（windows）和状态（state）操作等。
+
+Process Function 和 DataStream API 的相互集成使得用户可以选择使用更底层的抽象 API 来实现自己的需求。
+
+3. Flink API 第三层抽象是 **Table API**。
+    - Table API 是以表（Table）为中心的声明式编程（DSL）API，例如在流式数据场景下，它可以表示一张正在动态改变的表。
+    - Table API 遵循（扩展）关系模型：即表拥有 schema（类似于关系型数据库中的 schema）
+    - Table API 也提供了类似于关系模型中的操作，比如 select、project、join、group-by 和 aggregate 等。
+    - Table API 程序是以声明的方式定义应执行的逻辑操作，而不是确切地指定程序应该执行的代码。
+    - 尽管 Table API 使用起来很简洁并且可以由各种类型的用户自定义函数扩展功能，但还是比 Core API 的表达能力差。此外，Table API 程序在执行之前还会使用优化器中的优化规则对用户编写的表达式进行优化。
+
+表和 DataStream/DataSet 可以进行无缝切换，Flink 允许用户在编写应用程序时将 Table API 与 DataStream/DataSet API 混合使用。
+
+4. Flink API 最顶层抽象是 **SQL**。
+    - 这层抽象在语义和程序表达式上都类似于 Table API，但是其程序实现都是 SQL 查询表达式。SQL 抽象与 Table API 抽象之间的关联是非常紧密的，并且 SQL 查询语句可以在 Table API 中定义的表上执行。
+
+### DataStream API
+
+1. env
+2. source
+3. transformation
+4. sink
+
+#### State
+
+#### Windows
+
+#### Process Function
 
 按 key 分区处理函数(KeyedProcessFunction)
     Timer 和 TimerService
 
-### State
-
 ### SQL / Table API
+
+
 
 ## 容错机制
 
 ### Check Point
 
+Flink容错机制的核心部分：绘制分布式数据流和算子状态的一致快照。这些快照充当一致的检查点，在发生故障时，系统可以回退到这些检查点。
+
+算法：**`Chandy-Lamport`** 
+
+[分布式数据流的轻量级异步快照](https://arxiv.org/abs/1506.08603)。 
+
+与检查点有关的所有操作都可以异步完成。barriers 不会在锁定步骤中移动，算子可以异步快照其状态。
+
+从 Flink 1.11 开始，可以在有或没有对齐的情况下执行检查点。
+
+#### Barriers
+
+Flink 分布式快照的核心是 stream barriers。
+
+Barriers 被注入到数据流中，并与记录一起作为数据流的一部分流动。永远不会超过记录，严格按照顺序流动。
+
+Barriers 将数据流中的记录分为进入当前快照的记录集和进入下一个快照的记录集。每个 barrier 都带有快照的 ID。
+
+![图 8](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/10/mdi_20221004_1664854210746.png)  
+
+来自不同快照的多个 barrier 可以同时在流中，这意味着各种快照可能会同时发生。
+
+![图 1](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/10/mdi_20221004_1664846138209.png)  
+
+1. 算子从 incoming stream 接收到 barrier n，它就停止处理来自该流的 records，直到其他输入 barrier n 到齐。否则，它将混合属于快照 n 的记录和属于快照 n+1 的记录。
+
+2. 当最后一个 barrier n 到达，算子就会发出所有的挂起 records，最后发出快照 n barriers。
+
+3. 对状态快照并继续处理 input streams，先处理 input buffers 中的 records。
+
+4. 最后，算子将状态异步写入状态后端。
+
+请注意，具有多个输入的所有算子以及 shuffle 后的算子在使用多个上游子任务的输出流时都需要对齐。
+
+#### 快照算子状态
+
+算子 从 barriers对齐 到 barriers 发出之前，对其状态进行快照。
+
+由于快照的状态可能很大，因此它存储在可配置的状态后端中。默认情况下，这是 JobManager 的内存，但对于生产用途，应配置分布式可靠存储（如 HDFS）。存储状态后，算子确认检查点，将快照 barriers 发送到输出流中，然后继续。
+
+生成的快照中包含：
+
+- 对于每个并行流数据源，快照启动时流中的偏移量/位置
+- 对于每个算子，指向快照中状态的指针
+
+![图 5](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/10/mdi_20221004_1664850381273.png)  
+
+#### 恢复
+
+选择最新的完整检查点。
+
+#### 非对齐检查点
+
+让 in-flight data 成为算子状态的一部分。
+
+![图 6](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/10/mdi_20221004_1664851517560.png)  
+
+1. 算子对存储在其输入缓冲区中的第一个 barrier 做出反应。
+
+2. 将其添加到输出缓冲区的末尾，立即转发给下游算子。
+
+3. 算子将所有已接管的记录标记为异步存储，并创建其自身状态的快照。
+
+因此，算子仅短暂停止处理输入以标记缓冲区，转发障碍并创建其他状态的快照。
+
+#### 非对齐的恢复
+
+算子首先恢复动态数据，然后再开始处理来自上游算子的任何数据。
+
+#### 状态后端
+
+状态后端定义了键值索引的数据结构，并实现逻辑：拍摄时间点快照，并将其存储为检查点的一部分。
+（状态内部的存储格式、状态在 CheckPoint 时如何持久化以及持久化在哪里）
+
+##### HashMapStateBackend
+
+在 HashMapStateBackend 内部，数据以 Java 对象的形式存储在堆中。 Key/value 形式的状态和窗口算子会持有一个 hash table，其中存储着状态值、触发器。
+
+HashMapStateBackend 的适用场景：
+
+- 有较大 state，较长 window 和较大 key/value 状态的 Job。
+- 所有的高可用场景。
+  
+建议同时将 managed memory 设为0，以保证将最大限度的内存分配给 JVM 上的用户代码。
+
+与 EmbeddedRocksDBStateBackend 不同的是，由于 HashMapStateBackend 将数据以对象形式存储在堆中，因此重用这些对象数据是不安全的。
+
+##### EmbeddedRocksDBStateBackend
+
+EmbeddedRocksDBStateBackend 将正在运行中的状态数据保存在 RocksDB 数据库中，RocksDB 数据库默认将数据存储在 TaskManager 的数据目录。 不同于 HashMapStateBackend 中的 java 对象，数据被以序列化字节数组的方式存储，这种方式由序列化器决定，因此 key 之间的比较是以字节序的形式进行而不是使用 Java 的 hashCode 或 equals() 方法。
+
+EmbeddedRocksDBStateBackend 会使用异步的方式生成 snapshots。
+
+EmbeddedRocksDBStateBackend 的局限：
+
+- 由于 RocksDB 的 JNI API 构建在 byte[] 数据结构之上, 所以每个 key 和 value 最大支持 2^31 字节。 RocksDB 合并操作的状态（例如：ListState）累积数据量大小可以超过 2^31 字节，但是会在下一次获取数据时失败。这是当前 RocksDB JNI 的限制。
+
+EmbeddedRocksDBStateBackend 的适用场景：
+
+- 状态非常大、窗口非常长、key/value 状态非常大的 Job。
+- 所有高可用的场景。
+
+注意，你可以保留的状态大小仅受磁盘空间的限制。与状态存储在内存中的 HashMapStateBackend 相比，EmbeddedRocksDBStateBackend 允许存储非常大的状态。 然而，这也意味着使用 EmbeddedRocksDBStateBackend 将会使应用程序的最大吞吐量降低。 所有的读写都必须序列化、反序列化操作，这个比基于堆内存的 state backend 的效率要低很多。 同时因为存在这些序列化、反序列化操作，重用放入 EmbeddedRocksDBStateBackend 的对象是安全的。
+
+EmbeddedRocksDBStateBackend 是目前唯一支持增量 CheckPoint 的 State Backend。
+
+可以使用一些 RocksDB 的本地指标(metrics)，但默认是关闭的。
+
+每个 slot 中的 RocksDB instance 的内存大小是有限制的。
+
 ### Save Point
 
-###  Exactly-once
+保存点与检查点类似，不同之处在于它们由**用户触发**，并且不会在较新的检查点完成时**自动过期**。
+
+### Exactly-once
 ```java
 SingleOutputStreamOperator<Tuple2<String, Long>> aggregate = stream
         .keyBy(event -> event.user)
@@ -292,3 +554,14 @@ SingleOutputStreamOperator<Tuple2<String, Long>> aggregate = stream
 
 ## 复杂事件处理(CEP)
 https://nightlies.apache.org/flink/flink-docs-release-1.15/zh/docs/libs/cep/
+
+## 排错与调优
+
+### Flink 反压
+### Flink 数据倾斜
+### 大状态与 Checkpoint 调优
+
+## 问题
+
+### 启动流程
+### SQL解析机制

@@ -370,7 +370,7 @@
 
 3. 观察生成的配置文件
    
-    [atguigu@hadoop102 bin]$ ls /opt/module/datax/job/export/
+    [samantha@hadoop102 bin]$ ls /opt/module/datax/job/export/
     总用量 64
     gmall_report.ads_activity_stats.json                 gmall_report.ads_trade_stats_by_cate.json
     gmall_report.ads_coupon_stats.json                   gmall_report.ads_trade_stats_by_tm.json
@@ -383,7 +383,7 @@
     12.2.3 测试生成的DataX配置文件
     以ads_traffic_stats_by_channel为例，测试用脚本生成的配置文件是否可用。
     1）执行DataX同步命令
-    [atguigu@hadoop102 bin]$ python /opt/module/datax/bin/datax.py -p"-Dexportdir=/warehouse/gmall/ads/ads_traffic_stats_by_channel" /opt/module/datax/job/export/gmall_report.ads_traffic_stats_by_channel.json
+    [samantha@hadoop102 bin]$ python /opt/module/datax/bin/datax.py -p"-Dexportdir=/warehouse/gmall/ads/ads_traffic_stats_by_channel" /opt/module/datax/job/export/gmall_report.ads_traffic_stats_by_channel.json
     2）观察同步结果
     观察MySQL目标表是否出现数据。
 

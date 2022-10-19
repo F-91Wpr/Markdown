@@ -12,11 +12,9 @@
 
 对所有本地仓库的用户信息进行配置：
 
-对你的commit操作设置关联的用户名
+对你的commit操作设置关联的用户名和邮箱地址
 
 `$ git config --global user.name "[name]"`
-
-对你的commit操作设置关联的邮箱地址
 
 `$ git config --global user.email "[email address]"`
 
@@ -47,6 +45,7 @@
 `$ git branch [branch-name]`
 
 切换到指定分支并更新工作目录(working directory)
+
 `$ git switch -c [branch-name]`
 
 将指定分支的历史合并到当前分支。这通常在拉取请求(PR)中完成，但也是一个重要的 Git 操作。
