@@ -31,7 +31,7 @@
 1. 生成ssh秘钥对文件
 
     ```shell
-    sh-keygen -t rsa -C "[email address]"
+    ssh-keygen -t rsa -C "[email address]"
     ```
 
 2. 复制公钥`id_rsa.puh`内容到 Github => Setting => SSH and GPG keys => new SSH key ，点击 Add SSH key 完成配置。
