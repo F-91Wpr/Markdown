@@ -198,7 +198,7 @@ Nerd Fonts 是一个使用大量字体图标来解决程序员在开发过程中
 
 1. 在 Windows 上不用命令行。废物
 2. 在 Linux 上华而不实，废物
-3. 在 VSCode 中，pwsh 配置不能这么复杂。废物
+3. 在 VSCode 中，pwsh 配置花哨会启动异常的。废物
 
 ## code $PROFILE
 

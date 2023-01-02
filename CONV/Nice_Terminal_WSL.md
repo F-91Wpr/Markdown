@@ -35,14 +35,26 @@ rm ~/.poshthemes/themes.zip
 
 ## 更改默认 shell
 
-1. 显示已有的 bash:
+1. 显示当前 shell：
+
+    ```shell
+    echo $SHELL
+    ```
+    
+2. 显示已有的 shell:
 
     ```shell
     cat /etc/shells
     ```
 
-2. 取代bash，设为默认shell
+3. 取代bash，设为默认shell
 
     ```shell
     chsh -s /opt/microsoft/powershell/7/pwsh
     ```
+
+## 改回默认 /usr/bin/bash 不生效
+
+`.bashrc`被 `.bash_profile` 覆盖
+
+删除`.bash_profile`
