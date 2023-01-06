@@ -1,4 +1,4 @@
-采集通道启停脚本`cluster.sh`
+采集启停脚本`cluster.sh`
 
 ```shell
 vim ~/bin/cluster.sh

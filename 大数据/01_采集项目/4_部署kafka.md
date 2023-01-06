@@ -1,8 +1,136 @@
+## 安装
+
+```shell
+tar -zxf /opt/software/kafka_2.13-3.0.0.tgz -C /opt/module/
+mv /opt/module/kafka_2.13-3.0.0/ /opt/module/kafka
+```
+
+
+```shell
+# KAFKA_HOME
+export KAFKA_HOME=/opt/module/kafka
+export PATH=$PATH:$KAFKA_HOME/bin
+```
+
+
+```shell
+xsync /etc/profile.d/my_env.sh
+xcall source /etc/profile.d/my_env.sh
+```
+
+## 配置
+
+```shell
+vim /opt/module/kafka/config/server.properties
+```
+
+```shell
+# The id of the broker. This must be set to a unique integer for each broker
+broker.id=0
+
+# A comma separated list of directories under which to store log files
+log.dirs=/opt/module/kafka/datas
+
+# root directory for all kafka znodes
+zookeeper.connect=bd102:2181,bd103:2181,bd104:2181/kafka
+```
+
+```shell
+# 分发 kafka
+xsync /opt/module/kafka/
+
+# 修改103、104上的broker.id
+vim /opt/module/kafka/config/server.properties
+
+# 103
+broker.id=1
+
+# 104
+broker.id=2
+```
+
+## 运行kafka
+
+先运行zk，再运行kafka
+
+`kfs.sh`:
+
+```shell
+#!/bin/bash
+
+Usage="Usage: kfs.sh { start| stop| kc [topic]| kp [topic]| list| delete [topic]| describe [topic]}"
+if [ $# -lt 1 ]
+then 
+echo $Usage
+exit
+fi
+case $1 in 
+start)
+    for i in bd102 bd103 bd104
+    do
+    echo "====================> START $i KF <===================="
+    ssh $i kafka-server-start.sh  -daemon /opt/module/kafka/config/server.properties 
+    done
+;;
+stop)
+    for i in bd102 bd103 bd104
+    do
+    echo "====================> STOP $i KF <===================="
+    ssh $i kafka-server-stop.sh
+    done
+;;
+kc)
+    if [ $2 ]
+    then
+    kafka-console-consumer.sh --bootstrap-server bd102:9092,bd103:9092,bd104:9092 --topic $2
+    else
+        echo $Usage
+    fi
+;;
+kp)
+    if [ $2 ]
+    then 
+    kafka-console-producer.sh --broker-list bd102:9092,bd103:9092,bd104:9092 --topic $2
+    else
+    echo $Usage
+    fi
+;;
+
+list)
+    kafka-topics.sh --list --bootstrap-server bd102:9092,bd103:9092,bd104:9092
+;;
+describe)
+    if [ $2 ]
+    then
+    kafka-topics.sh --describe --bootstrap-server bd102:9092,bd103:9092,bd104:9092 --topic $2
+    else
+    echo $Usage
+    fi 
+;;
+
+delete)
+    if [ $2 ]
+    then
+    kafka-topics.sh --delete --bootstrap-server bd102:9092,bd103:9092,bd104:9092 --topic $2
+    else
+    echo $Usage
+    fi
+;;
+*)
+echo $Usage
+exit
+;;
+esac
+```
+
+
 ## Kafka 命令行操作
 
-## Kafka 生产者
 
-![图 1](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/07/mdi_20220720_1658313100964.png)  
+
+## 重要参数
+
+### Kafka 生产者
 
 1. 生产者重要参数列表
     | 参数名称                              | 描述                                                                                                                                        |
@@ -29,9 +157,7 @@
 kafka-run-class.sh kafka.tools.DumpLogSegments --print-data-log --files 00000000000000000000.log
 文件存储机制
 
-## Kafka 消费者
-   
-![图 2](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/07/mdi_20220720_1658313206049.png)  
+### Kafka 消费者
 
 1. 消费者重要参数
     | 参数名称                             | 描述                                                                                                                                                                                                                                                             |

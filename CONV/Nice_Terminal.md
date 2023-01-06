@@ -6,11 +6,11 @@
 终端：Windows Terminal
 概述：
     在十月份及之后的一段时间，微软更新了 Windows Terminal 和 WSL，他们似乎变得漂亮且易用。
-    我对此感兴趣，希望籍此改善我在学习过程中跨系统的体验，同时提高我对 Linux shell 的使用能力。
-    接下来我打算看看包管理 scoop 和编辑器 neovim。 
+    我对此感兴趣，希望籍此改善我在学习过程中跨系统的体验，同时提高我对 Linux shell 的使用能力。 
     本篇为美化终端的教程，参考微软官方文档、Oh My Posh 官方文档和大佬[Scott](https://www.youtube.com/watch?v=VT2L1SXFq9U&t=1237s)。
     Oh My Posh 是一个定制提示符引擎（custom prompt engine），在5.0版本后支持跨平台，因此本配置方案可以从 Windows 迁移到 Linux。
 
+![图 1](https://cdn.jsdelivr.net/gh/Z-404/imageHost@main/2023/01/MI_20230105_1672930174274.png)  
 
 ## 安装 Nerd Font
 
@@ -133,7 +133,9 @@ Nerd Fonts 是一个使用大量字体图标来解决程序员在开发过程中
     
     - 名称中带有 minimal 的主题不需要 Nerd 字体。
 
-## Terminal-Icons：添加文件类型图标
+## 导入模块
+
+### Terminal-Icons：添加文件类型图标
 
 1. 安装 Terminal-IconsTerminal-Icons 模块：
 
@@ -151,7 +153,7 @@ Nerd Fonts 是一个使用大量字体图标来解决程序员在开发过程中
 
 ![图 6](https://cdn.jsdelivr.net/gh/Z-404/imageHost@main/2022/12/MI_20221231_1672473344173.png)  
 
-## PSReadLine：增强命令行编辑
+### PSReadLine：增强命令行编辑
 
 1. 安装 PSReadLine 模块：
 
@@ -173,11 +175,13 @@ Nerd Fonts 是一个使用大量字体图标来解决程序员在开发过程中
     ```
 ![图 8](https://cdn.jsdelivr.net/gh/Z-404/imageHost@main/2022/12/MI_20221231_1672475197151.png)  
 
-## post-git: 为提示符增加 Git 状态摘要
+### post-git: 为提示符增加 Git 状态摘要
 
 ...你已经可以自己写了吧？
 
-## z
+### z：短路径
+
+...同上
 
 ## 其他优化
 
@@ -199,6 +203,8 @@ Nerd Fonts 是一个使用大量字体图标来解决程序员在开发过程中
 1. 在 Windows 上不用命令行。废物
 2. 在 Linux 上华而不实，废物
 3. 在 VSCode 中，pwsh 配置花哨会启动异常的。废物
+
+连个虚拟机挺好用的，传文件就 scp，编辑用 VSCode 远程连接插件。经常来回传文件就下载 WinSCP。
 
 ## code $PROFILE
 
