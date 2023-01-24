@@ -15,6 +15,10 @@
 `C-Ctrl`
 `M-Alt`
 
+```shell
+vim ~/.inputrc
+```
+
 绑定键位
 
 ```shell
@@ -39,6 +43,10 @@
 ## htop
 
 ![图 10](https://cdn.jsdelivr.net/gh/Z-404/imageHost@main/2023/01/MI_20230107_1673026748930.png)  
+
+## yt-dlp
+
+## ffmpeg
 
 ## cmatrix
 

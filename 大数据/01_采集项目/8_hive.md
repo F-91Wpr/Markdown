@@ -133,7 +133,7 @@ Spark
                 <!-- jdbc连接的URL -->
                 <property>
                     <name>javax.jdo.option.ConnectionURL</name>
-                    <value>jdbc:mysql://hadoop102:3306/metastore?useSSL=false</value>
+                    <value>jdbc:mysql://bd102:3306/metastore?useSSL=false</value>
                 </property>
                 
                 <!-- jdbc连接的Driver-->
@@ -185,7 +185,7 @@ Spark
         <!-- 指定hiveserver2连接的host -->
         <property>
             <name>hive.server2.thrift.bind.host</name>
-            <value>hadoop102</value>
+            <value>bd102</value>
         </property>
 
         <!-- 指定hiveserver2连接的端口号 -->
@@ -215,7 +215,7 @@ Spark
         <!-- 指定存储元数据要连接的地址 -->
         <property>
             <name>hive.metastore.uris</name>
-            <value>thrift://hadoop102:9083</value>
+            <value>thrift://bd102:9083</value>
         </property> 
         ```
         
@@ -275,6 +275,8 @@ Spark
 
 1. 安装 Spark
 
+    解压并添加PATH
+
 2. 在 hive 中创建 spark 配置文件
 
     ```shell
@@ -284,7 +286,7 @@ Spark
     ```shell
     spark.master                            yarn
     spark.eventLog.enabled                  true
-    spark.eventLog.dir                      hdfs://hadoop102:8020/spark-history
+    spark.eventLog.dir                      hdfs://bd102:8020/spark-history
     spark.executor.memory                   1g
     spark.driver.memory                     1g
     ```
@@ -300,6 +302,8 @@ Spark
 	说明2：Hive 任务最终由 Spark 来执行，Spark 任务资源分配由 Yarn 来调度，该任务有可能被分配到集群的任何一个节点。所以需要将 Spark 的依赖上传到 HDFS 集群路径，这样集群中任何一个节点都能获取到。
 
     ```shell
+    tar -zxf spark-3.0.0-bin-without-hadoop.tgz
+
     hadoop fs -mkdir /spark-jars
 
     hadoop fs -put spark-3.0.0-bin-without-hadoop/jars/* /spark-jars
@@ -311,7 +315,7 @@ Spark
     <!--Spark依赖位置（注意：端口号8020必须和namenode的端口号一致）-->
     <property>
         <name>spark.yarn.jars</name>
-        <value>hdfs://hadoop102:8020/spark-jars/*</value>
+        <value>hdfs://bd102:8020/spark-jars/*</value>
     </property>
     
     <!--Hive执行引擎-->
@@ -322,3 +326,11 @@ Spark
     ```
 
 ## 使用
+
+```shell
+hive
+
+hive (default)> create table student(id int, name string);
+
+hive (default)> insert into table student values(1,'abc');
+```
