@@ -96,9 +96,9 @@ bin/stop-cluster.sh     #关闭 Flink
 
 ## 架构
 
-![图 1](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/08/mdi_20220812_1660310165288.png)  
+![图 1](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost/2022/08/mdi_20220812_1660310165288.png)  
 
-![图 2](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/07/mdi_20220731_1659233313165.png)  
+![图 2](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost/2022/07/mdi_20220731_1659233313165.png)  
 
 ### JobManager
 JobManager 协调 Flink 应用程序的分布式执行：它决定何时调度下一个 task（或一组 task）、对完成的 task 或执行失败做出反应、协调 checkpoint、并且协调从失败中恢复等等。这个进程由三个不同的组件组成：
@@ -130,7 +130,7 @@ JobManager 会接收到一个 JobGraph - 由多个算子顶点 ( JobVertex ) 组
 JobManager 会将 JobGraph 转换成 ExecutionGraph 。可以将 ExecutionGraph 理解为并行版本的 JobGraph，对于每一个顶点 JobVertex，它的每个并行子 task 都有一个 ExecutionVertex 。一个并行度为 100 的算子会有 1 个 JobVertex 和 100 个 ExecutionVertex。ExecutionVertex 会跟踪子 task 的执行状态。 同一个 JobVertex 的所有 ExecutionVertex 都通过 ExecutionJobVertex 来持有，并跟踪整个算子的运行状态。ExecutionGraph 除了这些顶点，还包含中间数据结果和分片情况 IntermediateResult 和 IntermediateResultPartition 。前者跟踪中间结果的状态，后者跟踪每个分片的状态。
 </details>
 
-![JobManager 的数据结构](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/08/mdi_20220812_1660308873765.png)  
+![JobManager 的数据结构](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost/2022/08/mdi_20220812_1660308873765.png)  
 
 <details>
 <summary>ExecutionGraph 的作业状态</summary>
@@ -143,7 +143,7 @@ Flink 作业刚开始会处于 created 状态，然后切换到 running 状态�
 Finished、canceled 和 failed 会导致全局的终结状态，并且触发作业的清理。跟这些状态不同，suspended 状态只是一个局部的终结。局部的终结意味着作业的执行已经被对应的 JobManager 终结，但是集群中另外的 JobManager 依然可以从高可用存储里获取作业信息并重启。因此一个处于 suspended 状态的作业不会被彻底清理掉。
 </details>
 
-![ExecutionGraph 的作业状态](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/08/mdi_20220812_1660309101626.png)  
+![ExecutionGraph 的作业状态](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost/2022/08/mdi_20220812_1660309101626.png)  
 
 ### TaskManager
 https://nightlies.apache.org/flink/flink-docs-master/zh/docs/concepts/flink-architecture/#taskmanagers
@@ -379,7 +379,7 @@ Flink 中窗口是动态创建———当有落在这个窗口区间范围的�
 
 Flink 为流式/批式处理应用程序的开发提供了不同级别的抽象。
 
-![图 1](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/07/mdi_20220730_1659182979452.png)
+![图 1](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost/2022/07/mdi_20220730_1659182979452.png)
 
 1. Flink API 最底层的抽象为有状态实时流处理。
     - 抽象实现： **Process Function**，被 Flink 框架集成到了 DataStream API 中。
@@ -446,11 +446,11 @@ Barriers 被注入到数据流中，并与记录一起作为数据流的一部�
 
 Barriers 将数据流中的记录分为进入当前快照的记录集和进入下一个快照的记录集。每个 barrier 都带有快照的 ID。
 
-![图 8](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/10/mdi_20221004_1664854210746.png)  
+![图 8](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost/2022/10/mdi_20221004_1664854210746.png)  
 
 来自不同快照的多个 barrier 可以同时在流中，这意味着各种快照可能会同时发生。
 
-![图 1](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/10/mdi_20221004_1664846138209.png)  
+![图 1](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost/2022/10/mdi_20221004_1664846138209.png)  
 
 1. 算子从 incoming stream 接收到 barrier n，它就停止处理来自该流的 records，直到其他输入 barrier n 到齐。否则，它将混合属于快照 n 的记录和属于快照 n+1 的记录。
 
@@ -473,7 +473,7 @@ Barriers 将数据流中的记录分为进入当前快照的记录集和进入�
 - 对于每个并行流数据源，快照启动时流中的偏移量/位置
 - 对于每个算子，指向快照中状态的指针
 
-![图 5](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/10/mdi_20221004_1664850381273.png)  
+![图 5](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost/2022/10/mdi_20221004_1664850381273.png)  
 
 #### 恢复
 
@@ -483,7 +483,7 @@ Barriers 将数据流中的记录分为进入当前快照的记录集和进入�
 
 让 in-flight data 成为算子状态的一部分。
 
-![图 6](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/10/mdi_20221004_1664851517560.png)  
+![图 6](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost/2022/10/mdi_20221004_1664851517560.png)  
 
 1. 算子对存储在其输入缓冲区中的第一个 barrier 做出反应。
 

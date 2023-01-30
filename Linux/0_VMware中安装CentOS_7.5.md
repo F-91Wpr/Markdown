@@ -28,7 +28,7 @@ IO控制器：LSI Logic（默认）
 
 检查一遍：
 
-![图 1](https://cdn.jsdelivr.net/gh/Z-404/imageHost@main/2023/01/MI_20230103_1672733304784.png)  
+![图 1](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost@main/2023/01/MI_20230103_1672733304784.png)  
 
 ## 安装 CentOS
 

@@ -2,13 +2,13 @@
 
 1. 下载源码并解压
    https://www.scala-lang.org/download/all.html
-   ![image-20220527151531320](https://raw.githubusercontent.com/Z-404/imageHost/main/2022/05/upgit_20220527_1653635731.png)
+   ![image-20220527151531320](https://raw.githubusercontent.com/F-91Wpr/imageHost/main/2022/05/upgit_20220527_1653635731.png)
 
 2. 在intellij idea设置指向源代码
 
    打开IDEA，File –> Project Structure，快捷键（Ctrl + Alt + Shift + s）。
 
-   ![image-20220527152403979](https://raw.githubusercontent.com/Z-404/imageHost/main/2022/05/upgit_20220527_1653636244.png)
+   ![image-20220527152403979](https://raw.githubusercontent.com/F-91Wpr/imageHost/main/2022/05/upgit_20220527_1653636244.png)
 
 
 

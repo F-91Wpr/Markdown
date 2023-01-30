@@ -321,7 +321,7 @@ object Main {
 
 ## 统一类型
 
-![image-20220523091720485](https://raw.githubusercontent.com/Z-404/imageHost/main/2022/05/upgit_20220523_1653268640.png)
+![image-20220523091720485](https://raw.githubusercontent.com/F-91Wpr/imageHost/main/2022/05/upgit_20220523_1653268640.png)
 
 ### Scala类型层次结构
 
@@ -333,7 +333,7 @@ object Main {
 
 ### 类型转换
 
-![image-20220523084556552](https://raw.githubusercontent.com/Z-404/imageHost/main/2022/05/upgit_20220523_1653266756.png)
+![image-20220523084556552](https://raw.githubusercontent.com/F-91Wpr/imageHost/main/2022/05/upgit_20220523_1653266756.png)
 
 ### Nothing和Null
 

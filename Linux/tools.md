@@ -42,7 +42,7 @@ vim ~/.inputrc
 
 ## htop
 
-![图 10](https://cdn.jsdelivr.net/gh/Z-404/imageHost@main/2023/01/MI_20230107_1673026748930.png)  
+![图 10](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost@main/2023/01/MI_20230107_1673026748930.png)  
 
 ## yt-dlp
 
@@ -57,7 +57,7 @@ cmatrix
    [-r: rainbow mode]
 ```
 
-![cmatrix](https://cdn.jsdelivr.net/gh/Z-404/imageHost@main/2023/01/MI_20230105_1672929679268.png)  
+![cmatrix](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost@main/2023/01/MI_20230105_1672929679268.png)  
              
 ## screenfetch
 
@@ -66,7 +66,7 @@ sudo apt install screenfetch
 screenfetch
 ```
 
-![screenfetch](https://cdn.jsdelivr.net/gh/Z-404/imageHost@main/2023/01/MI_20230105_1672928966201.png)  
+![screenfetch](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost@main/2023/01/MI_20230105_1672928966201.png)  
 
 
 

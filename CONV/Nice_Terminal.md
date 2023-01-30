@@ -11,7 +11,7 @@ Oh My Posh 是一个定制提示符引擎（custom prompt engine），在5.0版�
 
 终端：Windows Terminal
 
-![图 1](https://cdn.jsdelivr.net/gh/Z-404/imageHost@main/2023/01/MI_20230105_1672930174274.png)  
+![图 1](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost@main/2023/01/MI_20230105_1672930174274.png)  
 
 ## 安装 Nerd Font
 
@@ -19,7 +19,7 @@ Oh My Posh 是一个定制提示符引擎（custom prompt engine），在5.0版�
 
 2. 将字体文件直接拖入`C:\Windows\Fonts`
 
-![图 4](https://cdn.jsdelivr.net/gh/Z-404/imageHost@main/2022/12/MI_20221231_1672467986732.png)  
+![图 4](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost@main/2022/12/MI_20221231_1672467986732.png)  
 
 <details> <summary>Nerd Font</summary>
 
@@ -42,7 +42,7 @@ Nerd Fonts 是一个使用大量字体图标来解决程序员在开发过程中
 
 2. 编辑`settings.json`中的`list`属性，清爽面板
 
-    ![图 5](https://cdn.jsdelivr.net/gh/Z-404/imageHost@main/2022/12/MI_20221231_1672471499280.png)  
+    ![图 5](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost@main/2022/12/MI_20221231_1672471499280.png)  
 
 <details> <summary>模块列表</summary>
 
@@ -136,7 +136,7 @@ z
     oh-my-posh init pwsh --config 'C:\Users\31880\AppData\Local\Programs\oh-my-posh\themes\montys.omp.json' | Invoke-Expression
     ```
 
-    ![图 7](https://cdn.jsdelivr.net/gh/Z-404/imageHost@main/2022/12/MI_20221231_1672474836003.png)  
+    ![图 7](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost@main/2022/12/MI_20221231_1672474836003.png)  
 
     - `Get-PoshThemes`命令可以下载并展示所有发布主题，这不是必须的，你也可以使用远程URL配置主题。
     
@@ -160,7 +160,7 @@ z
 
     - `Show-TerminalIconsTheme`命令展示所有图标样式。
 
-![图 6](https://cdn.jsdelivr.net/gh/Z-404/imageHost@main/2022/12/MI_20221231_1672473344173.png)  
+![图 6](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost@main/2022/12/MI_20221231_1672473344173.png)  
 
 ### PSReadLine：增强命令行编辑
 
@@ -182,7 +182,7 @@ z
     Set-PSReadLineOption -PredictionViewStyle ListView 
     Set-PSReadLineOption -EditMode Windows 
     ```
-![图 8](https://cdn.jsdelivr.net/gh/Z-404/imageHost@main/2022/12/MI_20221231_1672475197151.png)  
+![图 8](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost@main/2022/12/MI_20221231_1672475197151.png)  
 
 ### post-git: 为提示符增加 Git 状态摘要
 

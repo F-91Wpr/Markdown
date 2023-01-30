@@ -1,18 +1,18 @@
 ## 生产者消息发送流程
 
-![图 1](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/09/mdi_20220921_1663760869693.png)  
+![图 1](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost/2022/09/mdi_20220921_1663760869693.png)  
 
 ## broker 工作流程
 
-![图 2](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/09/mdi_20220921_1663761013456.png)  
+![图 2](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost/2022/09/mdi_20220921_1663761013456.png)  
 
 zk 中存储的 kafka 信息：
 
-![图 4](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/10/mdi_20221030_1667121123625.png) 
+![图 4](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost/2022/10/mdi_20221030_1667121123625.png) 
 
 ## 消费者组消费流程
 
-![图 3](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/09/mdi_20220921_1663761085924.png)  
+![图 3](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost/2022/09/mdi_20220921_1663761085924.png)  
 
 ## 异常处理
 

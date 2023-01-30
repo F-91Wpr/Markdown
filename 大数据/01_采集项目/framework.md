@@ -1,6 +1,6 @@
 ## 项目框架
 
-![总框架](https://cdn.jsdelivr.net/gh/Z-404/imageHost/2022/06/mdi_20220628_1656384394347.png)
+![总框架](https://cdn.jsdelivr.net/gh/F-91Wpr/imageHost/2022/06/mdi_20220628_1656384394347.png)
 
 ### 版本
 
